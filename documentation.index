@@ -212,6 +212,7 @@ src/Simulator.md
 src/WAN.md
 		src/DefiningWANReplication.md
 		src/ConfiguringWANReplicationForMapCache.md
+		src/WANPublisherStates.md
 		src/BatchSize.md
 		src/BatchMaximumDelay.md
 		src/ResponseTimeout.md

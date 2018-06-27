@@ -37,13 +37,15 @@ This chapter lists the changes made to this document from the previous release.
 |||Added [Password Encryption](#password-encryption) as a new section to explain how to encrypt LDAP passwords.
 ||[Defining Member Attributes](#defining-member-attributes)|Added information related to member filtering for distributed class loading (user code deployment).
 ||[Management Center](#management-center)|Updated by adding "Metrics-Only" privilege definition and "Enabling TLS/SSL when starting with WAR file" section.
-||[Diagnostics](#diagnostics)| Added explanations for two new diagnostics plugins: OperationHeartbeats and MemberHeartbeats.
+||[Diagnostics](#diagnostics)| Added explanations for new diagnostics plugins: OperationHeartbeats, MemberHeartbeats and WAN Diagnostics.
 |[Security](#security)|[SSL](#ssl)|Added "Authenticating Mutually" as a new section.|
 ||[Native Client Security](#native-client-security)| Added description for the Cache Permissions.
 ||[Validating Secrets Using Strength Policy](#validating-secrets-using-strength-policy)| Added as a new section.
 |[Performance](#performance)|[Near Cache](#near-cache)|Added "Locally Initiated Changes" as a new section.|
 ||[PartitioningStrategy](#partitioningstrategy)| Added as a new section.
 |[WAN](#wan)|| Added the new section [Defining WAN replication using Discovery SPI](#defining-wan-replication-using-discovery-spi) to explain how to use WAN with endpoints on various cloud infrastructures (such as Amazon EC2) where the IP addresses are not known in advance. <br> [WAN Replication Failure Detection and Recovery](#wan-replication-failure-detection-and-recovery) added as a new section.
+|||Added [WAN Publisher States](#wan-publisher-states) as a new section.
+|||Updated [Synchronizing WAN Target Cluster](#synchronizing-wan-target-cluster) section with the timestamp description.
 |[Network Partitioning](#network-partitioning)||Improved the whole content on how Hazelcast handles split-brain syndrome.
 |[System Properties](#system-properties)||Added definitions for the new properties: <br> - hazelcast.partition.migration.fragments.enabled <br> - hazelcast.legacy.memberlist.format.enabled<br> - hazelcast.mastership.claim.timeout.seconds<br> - hazelcast.diagnostics.operation-heartbeat.seconds <br> - hazelcast.diagnostics.operation-heartbeat.max-deviation-percentage <br> - hazelcast.diagnostics.member-heartbeat.seconds <br> - hazelcast.diagnostics.member-heartbeat.max-deviation-percentage <br> - hazelcast.operation.fail.on.indeterminate.state|
 
