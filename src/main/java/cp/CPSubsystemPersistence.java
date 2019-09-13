@@ -26,10 +26,8 @@ public class CPSubsystemPersistence {
 
         instance1.getLifecycleService().terminate();
         instance2.getLifecycleService().terminate();
-        instance3.getLifecycleService().terminate();
 
         instance1 = Hazelcast.newHazelcastInstance(config);
-        instance2 = Hazelcast.newHazelcastInstance(config);
 
         counter = instance1.getCPSubsystem().getAtomicLong("counter");
 

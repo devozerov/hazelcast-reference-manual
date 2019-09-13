@@ -16,7 +16,7 @@ apply plugin: 'java'
 
 
 ext {
-    imdgVersion = '3.12.2-visaEA1'
+    imdgVersion = '3.12.2-visa'
 }
 
 repositories {
