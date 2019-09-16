@@ -24,24 +24,21 @@ Data structures in CP Subsystem run in _CP groups_. Each CP group elects its
 own Raft leader and runs the https://raft.github.io/[Raft consensus algorithm]
 independently. CP Subsystem runs 2 CP groups by default:
 
-* The first one is
-_the METADATA CP group_ which is an internal CP group responsible for managing
-CP members and CP groups. It is initialized during cluster startup if CP
-Subsystem is enabled via `CPSubsystemConfig.setCPMemberCount(int)`.
-* The second
-CP group is _the DEFAULT CP group_, whose name is given in
-`CPGroup.DEFAULT_GROUP_NAME`.
+* The first one is _the METADATA CP group_ which is an internal CP group
+responsible for managing CP members and CP groups. It is initialized during
+cluster startup if CP Subsystem is enabled via `CPSubsystemConfig.setCPMemberCount(int)`.
+* The second CP group is _the DEFAULT CP group_, whose name is given in
+`CPGroup.DEFAULT_GROUP_NAME`. If a group name is not specified while creating
+a CP data structure proxy, that data structure is mapped to _the DEFAULT CP
+group_. For instance, when a CP `IAtomicLong` instance is created via
+`CPSubsystem.getAtomicLong("myAtomicLong")`, it is initialized on
+_the DEFAULT CP group_.
 
-If a group name is not specified while creating
-a CP data structure proxy, that data structure is mapped to
-_the DEFAULT CP group_. For instance, when a CP `IAtomicLong` instance is
-created via `CPSubsystem.getAtomicLong("myAtomicLong")`, it is initialized on
-_the DEFAULT CP group_. Besides these 2 predefined CP groups, custom CP groups
-can be created at run-time while fetching the CP data structure proxies. For
-instance, if a CP `IAtomicLong` is created by calling
- `.getAtomicLong("myAtomicLong@myGroup")`, first a new CP group is created with
-the name `myGroup` and then `myAtomicLong` is initialized on this custom CP
-group.
+Besides these 2 predefined CP groups, custom CP groups can be created at
+run-time while fetching the CP data structure proxies. For instance, if a CP
+`IAtomicLong` is created by calling `.getAtomicLong("myAtomicLong@myGroup")`,
+first a new CP group is created with the name `myGroup` and then `myAtomicLong`
+is initialized on this custom CP group.
 
 This design implies that each CP member can participate to more than one CP
 group. CP Subsystem runs a periodic background task to ensure that each CP
@@ -274,10 +271,10 @@ back.
 In summary, CP member shutdown behavior is as follows:
 
 * When CP Subsystem Persistence is disabled (the default mode), shutting down
-CP members are removed from the CP groups and the CP group majority values are
+CP members are removed from CP Subsystem and the CP group majority values are
 recalculated.
 * When CP Subsystem Persistence is enabled, shutting down CP members are still
-kept in the CP groups so they will be a part of the CP group majority calculations.
+kept in CP Subsystem     so they will be a part of the CP group majority calculations.
 
 Moreover, there is a subtle point about concurrent shutdown of CP members when
 CP Subsystem Persistence is disabled. If there are `N` CP members in CP
@@ -374,15 +371,16 @@ failed CP members, CP Subsystem regains its availability back. **Otherwise, it
 means that CP Subsystem has lost its majority irrevocably.** In this case,
 the only solution is to wipe-out the whole CP Subsystem state by performing
 a force-reset via `CPSubsystemManagementService.restart()`.
-+
+
+
 **When `CPSubsystemConfig.getCPMemberCount()` is greater than
 `CPSubsystemConfig.getGroupSize()`, CP groups are formed by selecting a subset
 of CP members. In this case, each CP group can have a different set of CP
 members, therefore different fault tolerance and availability conditions.** In
 the following list, CP Subsystem's additional fault tolerance capabilities are
 discussed for this configuration case.
-+
-** When the majority of a _non-METADATA CP group_ permanently crash, that CP
+
+* When the majority of a _non-METADATA CP group_ permanently crash, that CP
 group cannot make progress anymore, even though other CP groups in CP Subsystem
 are running fine. Even a new CP member cannot join to this CP group, because
 membership changes also go through the Raft consensus algorithm. For this
@@ -397,7 +395,7 @@ to partition-loss scenario of AP Hazelcast. Please note that _non-METADATA CP
 groups_ that have lost their majority must be force-destroyed immediately,
 because they can block _the METADATA CP group_ to perform membership changes on
 CP Subsystem.
-** If the majority of _the METADATA CP group_ permanently crash, unfortunately
+* If the majority of _the METADATA CP group_ permanently crash, unfortunately
 it is equivalent to the permanent crash of the majority CP members of the whole
 CP Subsystem, even though other CP groups are running fine. In fact, existing
 CP groups continue serving to incoming requests, but since the _METADATA CP
